@@ -5,7 +5,7 @@ from core import checks
 
 
 class Connect(commands.Cog):
-    """Migrox Support connection plugin."""
+    """Migrox Support - Connect plugin for Modmail 4.0.0."""
 
     def __init__(self, bot):
         self.bot = bot
@@ -13,7 +13,7 @@ class Connect(commands.Cog):
     @commands.command(name="connect")
     @checks.thread_only()
     async def connect(self, ctx):
-        """Connect a support representative to the current ticket."""
+        """Connect a support representative to the current thread."""
 
         embed = discord.Embed(
             title="🧡 MIGROX SUPPORT",
@@ -22,7 +22,7 @@ class Connect(commands.Cog):
                 "A member of the **Migros Corporation Support Team** "
                 "is now connected to your request and will assist you shortly."
             ),
-            color=discord.Color.orange(),
+            color=0xFF7A00,
         )
 
         embed.add_field(
@@ -33,9 +33,8 @@ class Connect(commands.Cog):
 
         embed.add_field(
             name="🕒 Connected",
-            value=discord.utils.format_dt(
-                discord.utils.utcnow(),
-                style="F",
+            value=discord.utils.utcnow().strftime(
+                "%d %B %Y • %H:%M UTC"
             ),
             inline=False,
         )
@@ -53,8 +52,8 @@ class Connect(commands.Cog):
             text="Migros Corporation • Migrox Support"
         )
 
-        await ctx.thread.reply(embed=embed)
+        await ctx.thread.send(embed=embed)
 
 
-async def setup(bot):
-    await bot.add_cog(Connect(bot))
+def setup(bot):
+    bot.add_cog(Connect(bot))
