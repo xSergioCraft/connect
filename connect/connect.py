@@ -12,44 +12,24 @@ class Connect(commands.Cog):
     @commands.command(name="connect")
     @checks.thread_only()
     async def connect(self, ctx):
-        embed = discord.Embed(
-            title="🧡 MIGROX SUPPORT",
-            description=(
-                "**Your support request has been connected.**\n\n"
-                "A member of the **Migros Corporation Support Team** "
-                "is now connected to your request and will assist you shortly."
-            ),
-            colour=discord.Colour.orange()
+        message = (
+            "**🧡 MIGROX SUPPORT**\n\n"
+            "**Your support request has been connected.**\n\n"
+            "A member of the **Migros Corporation Support Team** "
+            "is now connected to your request and will assist you shortly.\n\n"
+            "**👤 Support Representative**\n"
+            f"{ctx.author.mention}\n\n"
+            "**🕒 Connected**\n"
+            f"{discord.utils.utcnow().strftime('%d %B %Y • %H:%M UTC')}\n\n"
+            "**📌 Please Note**\n"
+            "Please remain in this conversation while your request "
+            "is being handled by our Support Team."
         )
 
-        embed.add_field(
-            name="👤 Support Representative",
-            value=ctx.author.mention,
-            inline=False
-        )
+        ctx.message.content = message
 
-        embed.add_field(
-            name="🕒 Connected",
-            value=discord.utils.utcnow().strftime(
-                "%d %B %Y • %H:%M UTC"
-            ),
-            inline=False
-        )
-
-        embed.add_field(
-            name="📌 Please Note",
-            value=(
-                "Please remain in this channel while your request "
-                "is being handled by our Support Team."
-            ),
-            inline=False
-        )
-
-        embed.set_footer(
-            text="Migros Corporation • Migrox Support"
-        )
-
-        await ctx.thread.reply(embed=embed)
+        async with ctx.typing():
+            await ctx.thread.reply(ctx.message)
 
 
 async def setup(bot):
